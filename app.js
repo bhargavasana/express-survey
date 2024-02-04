@@ -10,7 +10,7 @@ app.use(cors());
 // Configure PostgreSQL connection
 const pool = new Pool({
   // Your database connection details
-  connectionString: process.ENV.CONN
+  connectionString: process.env.CONN
 });
 
 app.get('/coordinates', async (req, res) => {
