@@ -1,6 +1,26 @@
 const express = require("express");
+const cors = require('cors');
+const { Pool } = require('pg');
 const app = express();
 const port = process.env.PORT || 3001;
+
+// Use CORS middleware to allow cross-origin requests
+app.use(cors());
+
+// Configure PostgreSQL connection
+const pool = new Pool({
+  // Your database connection details
+  connectionString: process.ENV.CONN
+});
+
+app.get('/coordinates', async (req, res) => {
+  try {
+    const response = await pool.query('SELECT origin_latlng, destination_latlng FROM responses ORDER BY id DESC LIMIT 1');
+    res.json(response.rows);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+});
 
 app.get("/", (req, res) => res.type('html').send(html));
 
